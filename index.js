@@ -619,7 +619,32 @@ if (text.includes("!animepict"))
   text1 = suara;
   var suara = text.replace(/#ttsid/g, text1);
   var filepath = 'mp3/bacot.wav';
-  
+	 
+  // Group Commands (group admin only)
+
+case 'kick':
+
+            if (!isGroupMsg) return client.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup! [Group Only]', id)
+
+            if (!isGroupAdmins) return client.reply(from, 'Gagal, perintah ini hanya dapat digunakan oleh admin grup! [Admin Group Only]', id)
+
+            if (!isBotGroupAdmins) return client.reply(from, 'Gagal, silahkan tambahkan bot sebagai admin grup! [Bot Not Admin]', id)
+
+            if (mentionedJidList.length === 0) return client.reply(from, 'Maaf, format pesan salah silahkan periksa menu. [Wrong Format]', id)
+
+            if (mentionedJidList[0] === botNumber) return await client.reply(from, 'Maaf, format pesan salah silahkan periksa menu. [Wrong Format]', id)
+
+            await client.sendTextWithMentions(from, `Request diterima, mengeluarkan:\n${mentionedJidList.map(x => `@${x.replace('@c.us', '')}`).join('\n')}`)
+
+            for (let i = 0; i < mentionedJidList.length; i++) {
+
+                if (groupAdmins.includes(mentionedJidList[i])) return await client.sendText(from, 'Gagal, kamu tidak bisa mengeluarkan admin grup.')
+
+                await client.removeParticipant(groupId, mentionedJidList[i])
+
+            }
+
+            break
   
 /*
  * save audio file
